@@ -14,7 +14,7 @@ const fieldSchema = yup.object().shape({
     .required("Поле 'логин' обязательно для заполнения")
     .matches(
       /^[\w_]*$/,
-      "Неверный логин. Допустимые символы: буквы, цифры и нижнее подчёркивание"
+      "Неверный логин. Допустимые символы: латинские буквы, цифры и нижнее подчёркивание"
     )
     .min(3, "Неверный логин. Должно быть не меньше 3 символов")
     .max(20, "Неверный логин. Должно быть не больше 20 символов"),
@@ -45,6 +45,7 @@ function App() {
       repeatPassword: "",
     }, // начальные значения инпутов
     resolver: yupResolver(fieldSchema), // валидация инпутов по схеме
+    mode: "onChange", //отследивания изменений по вводу данных в поля
   }); // вызов хука
 
   const loginError = errors.login?.message;
@@ -52,12 +53,6 @@ function App() {
   const repeatPasswordError = errors.repeatPassword?.message;
 
   const submitButtonRef = useRef(null);
-
-  setTimeout(() => {
-    if (!loginError && !passwordError && !repeatPasswordError) {
-      submitButtonRef.current.focus();
-    }
-  }, 0);
 
   return (
     <div className={style.app}>
